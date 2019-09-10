@@ -1,7 +1,16 @@
+import time
 import numpy as np
 
 from uq_kernel.monomial_example import create_monomial_models, \
-    get_monomial_model_inputs
+    get_monomial_model_inputs, is_monomial_output_correct
+
+
+def simple_serial_model_evaluation(models, model_inputs):
+    model_outputs = []
+    for model, multiple_inputs in zip(models, model_inputs):
+        multiple_outputs = [model.evaluate(inpt) for inpt in multiple_inputs]
+        model_outputs.append(np.array(multiple_outputs))
+    return model_outputs
 
 
 def check_model_execution(num_models: int, max_cost: float,
@@ -11,6 +20,17 @@ def check_model_execution(num_models: int, max_cost: float,
     models = create_monomial_models(num_models, max_cost, model_cost_ratio,
                                     cost_std_ratio)
     model_inputs = get_monomial_model_inputs(models, target_cost)
+
+    t_start = time.time()
+    model_outputs = simple_serial_model_evaluation(models, model_inputs)
+    t_end = time.time()
+
+    success = is_monomial_output_correct(models, model_inputs, model_outputs)
+
+    print("Model Execution Results:")
+    print("  Output is", "Correct!" if success else "Incorrect!")
+    print("  Target run time was", target_cost)
+    print("  Actual run time was", t_end - t_start)
 
 
 if __name__ == "__main__":
