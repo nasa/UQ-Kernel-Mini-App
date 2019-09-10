@@ -95,14 +95,6 @@ def _calculate_optimal_num_samples(stdevs: np.ndarray, correlation: np.ndarray,
     sample_nums = [target_cost / np.dot(costs, sample_ratios)]
     for ratio in sample_ratios[1:]:
         sample_nums.append(sample_nums[0]*ratio)
-
-    alpha_star = [0] + [correlation[0, i] * stdevs[0] / stdevs[i]
-                        for i in range(1, len(stdevs))]
-    estimator_variance = stdevs[0]**2 / sample_nums[0]
-    for i in range(1, num_models):
-        estimator_variance += (1/sample_nums[i-1] - 1/sample_nums[i]) \
-                              * (alpha_star[i]**2 * stdevs[i]**2
-                                 - 2 * alpha_star[i] * correlation[0, i]
-                                 * stdevs[0] * stdevs[i])
+        
     return [int(num) for num in sample_nums]
 
