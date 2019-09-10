@@ -1,7 +1,7 @@
 import numpy as np
 
 from uq_kernel.monomial_example import create_monomial_models, \
-    get_monomial_model_inputs, plate
+    get_monomial_model_inputs
 
 
 def check_model_execution(num_models: int, max_cost: float,
@@ -22,5 +22,3 @@ if __name__ == "__main__":
 
     check_model_execution(NUM_MODELS, MAX_COST, MODEL_COST_RATIO,
                           COST_STD_RATIO, TARGET_COST)
-
-    plate()

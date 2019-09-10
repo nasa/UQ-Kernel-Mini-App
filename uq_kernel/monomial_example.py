@@ -104,32 +104,5 @@ def _calculate_optimal_num_samples(stdevs: np.ndarray, correlation: np.ndarray,
                               * (alpha_star[i]**2 * stdevs[i]**2
                                  - 2 * alpha_star[i] * correlation[0, i]
                                  * stdevs[0] * stdevs[i])
-    print(estimator_variance)
     return [int(num) for num in sample_nums]
-
-
-def plate():
-    stdevs = np.sqrt([1.4968e-2,
-                      1.4967e-2,
-                      #1.4975e-2,
-                      #1.4946e-2,
-                      #1.7429e-2,
-                      #1.4298e-2
-                      ])
-    corr = np.array([[1.0,
-                      0.999999986,
-                      #0.999999238,
-                      #0.999948132,
-                      #0.998580437,
-                      #0.996563656
-                      ]])
-    costs = [4.0894e-1,
-             4.9890e-3,
-             #1.3264e-3,
-             #2.9550e-4,
-             #2.2260e-5,
-             #1.5048e-6
-             ]
-    target_cost = 1
-    _calculate_optimal_num_samples(stdevs, corr, costs, target_cost)
 
