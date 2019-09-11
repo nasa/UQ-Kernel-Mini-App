@@ -13,8 +13,9 @@ def test_setting_cost(approx_cost):
 
 @pytest.mark.parametrize("approx_cost", [0.1, 0.05])
 def test_evaluation_time(approx_cost):
+    np.random.seed(0)
     model = MonomialModel(1, approx_cost, 0.00)
-    random_input = np.zeros(1)
+    random_input = np.random.random(size=(1,))
 
     t_0 = time.time()
     for _ in range(5):
@@ -25,11 +26,12 @@ def test_evaluation_time(approx_cost):
 
 @pytest.mark.parametrize("cost_std", [0.009, 0.015])
 def test_variation_in_evaluation_time(cost_std):
+    np.random.seed(0)
     model = MonomialModel(1, 0.04, cost_std)
-    random_input = np.zeros(1)
 
     eval_times = []
     for _ in range(40):
+        random_input = np.random.random(size=(1,))
         t_0 = time.time()
         _ = model.evaluate(random_input)
         t_1 = time.time()

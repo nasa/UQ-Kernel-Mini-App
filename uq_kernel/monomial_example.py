@@ -1,5 +1,6 @@
-from time import sleep
+from time import sleep, time
 from typing import List, Tuple
+from scipy.stats import norm as normal_distribution
 import numpy as np
 
 from uq_kernel.model import UQModel
@@ -32,25 +33,32 @@ class MonomialModel(UQModel):
         Evaluate the monomial model at a given random input.  The models output
         is the input raised to an exponent, y = x^e
 
-        :param random_input: array of inputs, x
+        :param random_input: array of input, x, in the interval (0, 1)
         :return: corresponding output, x^e
         """
-        actual_cost = np.random.normal(self._approximate_cost,
-                                       self._cost_std)
-        sleep(actual_cost)
+        t_0 = time()
+        actual_cost = self.calculate_actual_cost(random_input)[0]
         output = np.array(random_input ** self.exponent)
+        actual_cost -= time() - t_0
+        if actual_cost > 0:
+            sleep(actual_cost)
         return output
 
+    def calculate_actual_cost(self, random_input: np.ndarray) -> np.ndarray:
+        z = normal_distribution.ppf(random_input)
+        actual_cost = self._approximate_cost + z * self._cost_std
+        return actual_cost
 
-def create_monomial_models(num_models: int, max_cost: float,
-                           model_cost_ratio: float = 0.1,
-                           cost_std_ratio: float = 0.1) -> List[MonomialModel]:
+
+def create_models(num_models: int, max_cost: float,
+                  model_cost_ratio: float = 0.1,
+                  cost_std_ratio: float = 0.1) -> List[MonomialModel]:
     """
     Creates monomial models to be used in model execution tests
 
     :param num_models: number of models to create
     :param max_cost: cost of the highest cost model, models[0]
-    :param model_cost_ratio: multiplicative in model costs for each successive
+    :param model_cost_ratio: multiplicative model costs for each successive
         model
     :param cost_std_ratio: amount of variation in evaluation time as a fraction
         of evaluation time
@@ -65,10 +73,10 @@ def create_monomial_models(num_models: int, max_cost: float,
     return models
 
 
-def get_monomial_model_inputs(models: List[MonomialModel],
-                              target_cost: float) -> List[np.ndarray]:
+def get_model_inputs(models: List[MonomialModel],
+                     target_cost: float) -> List[np.ndarray]:
     """
-    Gets the arrays of inputs for monomial models acording to multi-fidelity
+    Gets the arrays of inputs for monomial models according to multi-fidelity
     monte carlo
 
     :param models: the `MonomialModel`s
@@ -118,9 +126,9 @@ def _calculate_optimal_num_samples(correlation: np.ndarray,
     return [int(num) for num in sample_nums]
 
 
-def is_monomial_output_correct(models: List[MonomialModel],
-                               model_input: List[np.ndarray],
-                               model_output: List[np.ndarray]) -> bool:
+def is_output_correct(models: List[MonomialModel],
+                      model_input: List[np.ndarray],
+                      model_output: List[np.ndarray]) -> bool:
     """
     Checks whether output from execution matches the expected output of
     monomial models
@@ -143,3 +151,19 @@ def _get_correct_output(models: List[MonomialModel],
                         model_input: List[np.ndarray],
                         ) -> List[np.ndarray]:
     return [inp**mod.exponent for mod, inp in zip(models, model_input)]
+
+
+def get_execution_time(models: List[MonomialModel],
+                       model_input: List[np.ndarray]) -> float:
+    """
+    Calculate the theoretical execution time of a group of models with given
+    inputs.
+
+    :param models: `MonomialModel`s that were evaluated
+    :param model_input: The inputs for each `MonomialModel`
+    :return: theoretical execution time
+    """
+    theoretical_time = 0
+    for model, inpts in zip(models, model_input):
+        theoretical_time += np.sum(model.calculate_actual_cost(inpts))
+    return theoretical_time
