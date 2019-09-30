@@ -2,6 +2,24 @@
 
 A kernel for uncertainty quantification (UQ) codes at NASA.
 
+# Getting Started
+
+1) Clone or download this repository
+* It is best to work with and modify the source code using Git ([install/update Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)). Using Git, clone the repository to your computer using `git clone https://github.com/nasa/UQ-Kernel-Mini-App.git`. Otherwise, the repository can be downloaded manually with the "Clone or download" button above. 
+2) Add the repository to your Python path
+* On Mac/Linux, add `export PYTHONPATH=$PYTHONPATH:Path/To/Your/Repo/` to your ~/.bashrc file (click [here](https://stackoverflow.com/questions/3402168/permanently-add-a-directory-to-pythonpath) for more details). For Windows, see this [link](https://stackoverflow.com/questions/3701646/how-to-add-to-the-pythonpath-in-windows-so-it-finds-my-modules-packages). This makes it possible to run the code in this repository from anywhere on your computer.
+3) Make sure you have the required Python modules
+* The repository uses a few external Python modules (currently just `numpy` and `scipy`). Either install them manually, or using pip: `pip install -r requirements.txt` or Anaconda: `conda install --yes --file requirements.txt` from the top directory of the repository.
+4) Test that everything is working correctly
+* Navigate to the `/tests/` directory in the repository and type `python engine_check.py`. If things are working as expected, you should see an output similar to:
+```
+Engine Check Results:
+  Output is Correct!
+  Theoretical execution time was 9.40658189601207
+  Actual execution time was 9.961344003677368
+  Efficiency was 0.9443
+```
+
 # VT Capstone project
 
 ## Challenge
