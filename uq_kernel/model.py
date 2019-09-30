@@ -11,9 +11,9 @@ class UQModel(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def cost(self) -> float:
+    def cost(self):
         return NotImplementedError
 
     @abstractmethod
-    def evaluate(self, random_input: np.ndarray) -> np.ndarray:
+    def evaluate(self, inputs):
         return NotImplementedError

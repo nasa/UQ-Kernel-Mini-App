@@ -1,17 +1,11 @@
 import time
-from typing import List, Callable
 import numpy as np
 
 from uq_kernel.model import UQModel
 from uq_kernel import monomial_example
 
-EngineFunction = Callable[[List[UQModel], List[np.ndarray]],
-                          List[np.ndarray]]
 
-
-def simple_serial_engine(models: List[UQModel],
-                         model_inputs: List[np.ndarray]
-                         ) -> List[np.ndarray]:
+def simple_serial_engine(models, model_inputs):
     """
     Evaluates each of the models at their given inputs one after another.
     Creating an alternative to this function which executes in parallel and
@@ -28,10 +22,9 @@ def simple_serial_engine(models: List[UQModel],
     return model_outputs
 
 
-def check_model_execution(engine_function: EngineFunction,
-                          num_models: int, max_cost: float,
-                          model_cost_ratio: float, cost_std_ratio: float,
-                          target_cost: float, num_processes: int = 1):
+def check_model_execution(engine_function, num_models, max_cost, 
+                          model_cost_ratio, cost_std_ratio, target_cost, 
+                          num_processes=1):
     """
     Runs an engine function on a monomial model test case.
 
@@ -39,15 +32,18 @@ def check_model_execution(engine_function: EngineFunction,
     function allow for the adjustment of model run times which can be useful in
     exploring load balancing.
 
-    :param engine_function: The function which executes the models
-    :param num_models: The number of models to use in execution
-    :param max_cost: Cost of the highest cost model, models[0]
-    :param model_cost_ratio: Multiplicative model costs for each successive
-        model
-    :param cost_std_ratio: Amount of variation in evaluation time as a fraction
-        of evaluation time
-    :param target_cost: The approximate total run cost of the models
-    :param num_processes: the number of processes used in execution
+    :param engine_function: The function which executes the models; it's
+        arguments are a list of UQModels and list of numpy input arrays and 
+        returns a list of numpy output arrays (see the simple_serial_engine 
+        function above) 
+    :param num_models (int): The number of models to use in execution
+    :param max_cost (float): Cost of the highest cost model, models[0]
+    :param model_cost_ratio (float): Multiplicative model costs for each 
+        successive model
+    :param cost_std_ratio (float): Amount of variation in evaluation time as a
+        fraction of evaluation time
+    :param target_cost (float): The approximate total run cost of the models
+    :param num_processes (int): the number of processes used in execution
     """
 
     models = monomial_example.create_models(num_models, max_cost,
