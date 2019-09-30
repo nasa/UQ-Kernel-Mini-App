@@ -11,7 +11,7 @@ A kernel for uncertainty quantification (UQ) codes at NASA.
 3) Make sure you have the required Python modules
 * The repository uses a few external Python modules (currently just `numpy` and `scipy`). Either install them manually, or using pip: `pip install -r requirements.txt` or Anaconda: `conda install --yes --file requirements.txt` from the top directory of the repository.
 4) Test that everything is working correctly
-* Navigate to the `/tests/` directory in the repository and type `python engine_check.py`. If things are working as expected, you should see an output similar to:
+* Navigate to the `tests/` directory in the repository and type `python engine_check.py`. If things are working as expected, you should see an output similar to:
 ```
 Engine Check Results:
   Output is Correct!
