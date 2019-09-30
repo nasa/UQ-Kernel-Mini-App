@@ -6,8 +6,8 @@ A kernel for uncertainty quantification (UQ) codes at NASA.
 
 ## Challenge
 Devise  an  interface  (front end)  and  computational  engine  (back end)  
-that  increases  the  usability,efficiency, and scalability of NASA open-source 
-uncertainty quantification software.
+that  increases  the  usability, efficiency, and scalability of NASA 
+open-source uncertainty quantification software.
 
 ### Sub-challenge 1: interface
  How can we best allow users from all disciplines to “plug” their own 
