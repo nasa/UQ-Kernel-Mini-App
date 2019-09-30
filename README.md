@@ -11,7 +11,7 @@ A kernel for uncertainty quantification (UQ) codes at NASA.
 3) Make sure you have the required Python modules
 * The repository uses a few external Python modules (currently just `numpy` and `scipy`). Either install them manually, or using pip: `pip install -r requirements.txt` or Anaconda: `conda install --yes --file requirements.txt` from the top directory of the repository.
 4) Test that everything is working correctly
-* Navigate to the `/tests/` directory in the repository and type `python engine_check.py`. If things are working as expected, you should see an output similar to:
+* Navigate to the `tests/` directory in the repository and type `python engine_check.py`. If things are working as expected, you should see an output similar to:
 ```
 Engine Check Results:
   Output is Correct!
@@ -50,6 +50,9 @@ def evaluate(self, inputs):
  evaluate() function finds and returns output for given input
  * Model loads a previously-trained machine learning model from file (a Python 
  pickle file) and uses it to make a prediction in evaluate()
+ 
+See `examples/model_types/` for concrete examples of these possible Python models 
+(To-do!). 
  
 ### Implementation
 A starting interface for a `UQModel` is defined in `uq_kernel/model.py`.  It 
@@ -115,3 +118,9 @@ computes its efficiency.  The script is configurable to test many different
 possibilities of model number, run times, etc.  Note that it is likely that the 
 script will need to be modified to work in the context of the engine you 
 develop.  It should prove useful, nonetheless.
+
+#### Running a model in parallel with mpi4py
+
+An example script demonstrating basic usage of `mpi4py` to evaluate a Python model
+in parallel is given in `examples/parallel/run_model_with_mpi.py`. In order to run
+this script, `mpi4py` must be installed, which requires a working installation of MPI on your computer (look for [online resources](https://mpi4py.readthedocs.io/en/stable/install.html) if there are issues). Once installed properly, the script can be run with `mpirun -np <number of processors> python run_model_with_mpi.py` or `mpiexec -n <number of processors> python run_model_with_mpi.py` depending on your version of MPI. 
