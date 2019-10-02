@@ -1,1 +1,10 @@
-Examples of different model types will go here..
+The inputs to the simple spring mass simulation are specified in `spring_mass_inputs.txt`. The simulation
+can be run by executing `python spring_mass_simulation.py spring_mass_inputs.txt outputfile.txt`. This will
+produce the `outputfile.txt` file that contains the maximum displacement over the course of a 10 second
+spring mass simulation for the given input parameters. 
+
+The class in the `spring_mass_UQ_model.py` is an example of how a user of NASA UQ software would create
+an interface to their spring mass simulation that complies with the UQ software. I.e., they need to 
+create a Python class with an `evaluate()` function that takes the inputs to their model (here, the
+spring stiffness), writes the appropriate input file, executes their simulation to produce an output file,
+then parses/returns the output of interest from that file.
