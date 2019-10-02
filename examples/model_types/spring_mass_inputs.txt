@@ -1,6 +1,0 @@
-#Input file to run the spring mass model 
-mass=1.5
-gravity=9.8
-stiffness=2.5 
-time_step=0.1
-cost=1.0
