@@ -8,3 +8,9 @@ an interface to their spring mass simulation that complies with the UQ software.
 create a Python class with an `evaluate()` function that takes the inputs to their model (here, the
 spring stiffness), writes the appropriate input file, executes their simulation to produce an output file,
 then parses/returns the output of interest from that file.
+
+Test spring_mass_simulation.py by executing: 
+`python spring_mass_simulation.py spring_mass_inputs.txt outputfile.txt`
+
+Test the spring_mass_UQ_model.py implementation by running:
+`python run_spring_mass_uq_model.py`
